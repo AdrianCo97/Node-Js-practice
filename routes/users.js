@@ -4,8 +4,6 @@ import {getUsers, createUser, getUser, deleteUser, patchUser} from "../controlle
 
 const router = express.Router();
 
-let users = [];
-
 router.get("/", getUsers);
 
 router.post("/", createUser);
