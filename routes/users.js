@@ -1,57 +1,19 @@
 import express from "express";
-import {v4 as uuidv4} from "uuid";
+
+import {getUsers, createUser, getUser, deleteUser, patchUser} from "../controllers/users.js";
 
 const router = express.Router();
 
 let users = [];
 
-router.get("/", (req, res) => {
-    res.send(users);
-});
+router.get("/", getUsers);
 
-router.post('/', (req, res) => {
+router.post("/", createUser);
 
-    const user = req.body;
+router.get("/:id", getUser);
 
-    users.push({ ...user, id: uuidv4() });
+router.delete("/:id", deleteUser);
 
-    res.send("User with the name " + user.name + " was added to the database.");
-});
-
-router.get("/:id", (req, res) => {
-    const { id } = req.params;
-
-    const foundUser = users.find((user) => user.id === id);
-
-    res.send(foundUser);
-});
-
-router.delete("/:id", (req, res) => {
-    const { id } = req.params;
-
-    users = users.filter((user) => user.id != id);
-
-    res.send("User with the id " + id + " was deleted from the database.");
-});
-
-router.patch("/:id", (req, res) => {
-    const { id } = req.params;
-
-    const {name, lastName, age } = req.body;
-
-    const user = users.find((user) => user.id === id);
-
-    if(name){
-        user.name = name;
-    }
-    else if(lastName){
-        user.lastName = lastName;
-    }
-    else if(age){
-        user.age = age;
-    }
-
-    res.send(`User with the id ${id} was updated.`);
-});
+router.patch("/:id", patchUser);
 
 export default router;
